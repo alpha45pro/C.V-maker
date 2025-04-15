@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CareerCanvas - AI CV Maker</title>
+  <style>
+    /* Base styles */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    body {
+      background-color: #f5f7fa;
+      color: #333;
+      line-height: 1.6;
+    }
+    
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    h1 {
+      font-size: 2rem;
+      text-align: center;
+      margin-bottom: 1.5rem;
+      color: #2d3748;
+    }
+    
+    /* Button styles */
+    .btn {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.2s ease;
+    }
+    
+    .btn-primary {
+      background-color: #3b82f6;
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background-color: #2563eb;
+    }
+    
+    .btn-secondary {
+      background-color: #e2e8f0;
+      color: #4b5563;
+    }
+    
+    .btn-secondary:hover {
+      background-color: #cbd5e1;
+    }
+    
+    .btn-success {
+      background-color: #10b981;
+      color: white;
+    }
+    
+    .btn-success:hover {
+      background-color: #059669;
+    }
+    
+    .btn-danger {
+      background-color: #ef4444;
+      color: white;
+    }
+    
+    .btn-danger:hover {
+      background-color: #dc2626;
+    }
+    
+    /* Tabs */
+    .tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 1rem;
+    }
+    
+    .tabs button.active {
+      background-color: #3b82f6;
+      color: white;
+    }
+    
+    .nav-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+    
+    /* Form styles */
+    .form-group {
+      margin-bottom: 1rem;
+    }
+    
+    label {
+      display: block;
+      font-size: 0.875rem;
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+      color: #4b5563;
+    }
+    
+    input, textarea, select {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 5px;
+      font-size: 0.875rem;
+    }
+    
+    input:focus, textarea:focus, select:focus {
+      outline: none;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+    }
+    
+    textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+    
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    
+    /* Entry card */
+    .card {
+      background-color: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 1.25rem;
+      margin-bottom: 1.25rem;
+    }
+    
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+    
+    .card-header h3 {
+      font-size: 1rem;
+      font-weight: 500;
+    }
+    
+    /* CV Preview styles */
+    .cv-preview {
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: white;
+      padding: 2rem;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    }
+    
+    .cv-header {
+      border-bottom: 1px solid #e2e8f0;
+      padding-bottom: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    
+    .cv-header h1 {
+      text-align: left;
+      margin-bottom: 0.5rem;
+    }
+    
+    .cv-contact {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      color: #6b7280;
+      font-size: 0.9rem;
+    }
+    
+    .cv-section {
+      margin-bottom: 1.5rem;
+    }
+    
+    .cv-section h2 {
+      font-size: 1.25rem;
+      margin-bottom: 0.75rem;
+      color: #2d3748;
+    }
+    
+    .cv-item {
+      margin-bottom: 1rem;
+    }
+    
+    .cv-item-header {
+      display: flex;
+      justify-content: space-between;
+    }
+    
+    .cv-item-title {
+      font-weight: 500;
+      color: #2d3748;
+    }
+    
+    .cv-item-date {
+      color: #6b7280;
+      font-size: 0.875rem;
+    }
+    
+    .cv-item-subtitle {
+      color: #4b5563;
+    }
+    
+    .cv-item-desc {
+      margin-top: 0.25rem;
+      color: #6b7280;
+      font-size: 0.9rem;
+    }
+    
+    .skills-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    
+    .skill-badge {
+      background-color: #f3f4f6;
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      font-size: 0.8rem;
+      color: #4b5563;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .logo {
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .logo svg {
+      width: 40px;
+      height: 40px;
+      margin-right: 10px;
+    }
+
+    .logo h1 {
+      margin: 0;
+      font-size: 1.8rem;
+      background: linear-gradient(90deg, #3b82f6, #10b981);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    
+    /* Footer styles */
+    footer {
+      text-align: center;
+      margin-top: 2rem;
+      padding-top: 1rem;
+      border-top: 1px solid #e2e8f0;
+      color: #6b7280;
+      font-size: 0.875rem;
+    }
+    
+    .author {
+      font-weight: 500;
+      color: #4b5563;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #3b82f6;">
+        <path d="M12 22a10 10 0 100-20 10 10 0 000 20z"></path>
+        <path d="M8 10h8"></path>
+        <path d="M8 14h8"></path>
+        <path d="M12 6v12"></path>
+      </svg>
+      <h1>CareerCanvas</h1>
+    </div>
+
+    <div class="nav-container">
+      <div class="tabs">
+        <button class="btn btn-secondary active" data-tab="personal">Personal</button>
+        <button class="btn btn-secondary" data-tab="education">Education</button>
+        <button class="btn btn-secondary" data-tab="experience">Experience</button>
+        <button class="btn btn-secondary" data-tab="skills">Skills</button>
+      </div>
+      <button id="preview-toggle" class="btn btn-success">Preview CV</button>
+    </div>
+    
+    <!-- Content Area -->
+    <div id="form-content">
+      <!-- Personal Tab -->
+      <div id="personal-tab" class="tab-content">
+        <div class="form-group">
+          <label for="name">Full Name</label>
+          <input type="text" id="name" name="name">
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email">
+        </div>
+        <div class="form-group">
+          <label for="phone">Phone</label>
+          <input type="tel" id="phone" name="phone">
+        </div>
+        <div class="form-group">
+          <label for="address">Address</label>
+          <input type="text" id="address" name="address">
+        </div>
+        <div class="form-group">
+          <label for="summary">Professional Summary</label>
+          <textarea id="summary" name="summary"></textarea>
+        </div>
+      </div>
+      
+      <!-- Education Tab -->
+      <div id="education-tab" class="tab-content hidden">
+        <div id="education-entries"></div>
+        <button id="add-education" class="btn btn-primary" style="width: 100%;">Add Education</button>
+      </div>
+      
+      <!-- Experience Tab -->
+      <div id="experience-tab" class="tab-content hidden">
+        <div id="experience-entries"></div>
+        <button id="add-experience" class="btn btn-primary" style="width: 100%;">Add Experience</button>
+      </div>
+      
+      <!-- Skills Tab -->
+      <div id="skills-tab" class="tab-content hidden">
+        <div id="skills-entries"></div>
+        <button id="add-skill" class="btn btn-primary" style="width: 100%;">Add Skill</button>
+      </div>
+    </div>
+    
+    <!-- CV Preview -->
+    <div id="cv-preview" class="hidden">
+      <div class="cv-preview">
+        <div class="cv-header">
+          <h1 id="preview-name">Your Name</h1>
+          <div class="cv-contact">
+            <div id="preview-email"></div>
+            <div id="preview-phone"></div>
+            <div id="preview-address"></div>
+          </div>
+        </div>
+        
+        <div id="preview-summary-section" class="cv-section hidden">
+          <h2>Professional Summary</h2>
+          <p id="preview-summary"></p>
+        </div>
+        
+        <div id="preview-experience-section" class="cv-section hidden">
+          <h2>Work Experience</h2>
+          <div id="preview-experience"></div>
+        </div>
+        
+        <div id="preview-education-section" class="cv-section hidden">
+          <h2>Education</h2>
+          <div id="preview-education"></div>
+        </div>
+        
+        <div id="preview-skills-section" class="cv-section hidden">
+          <h2>Skills</h2>
+          <div id="preview-skills" class="skills-list"></div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Footer with author info -->
+    <footer>
+      <p>Made with ❤️ by <span class="author">Vasu Jain</span> | &copy; 2025 CareerCanvas</p>
+    </footer>
+  </div>
+
+  <script>
+    // Initial State
+    const state = {
+      personal: {
+        name: '',
+        email: '',
+        phone: '',
+        address: '',
+        summary: ''
+      },
+      education: [],
+      experience: [],
+      skills: [],
+      activeTab: 'personal',
+      preview: false
+    };
+
+    // DOM Elements
+    const tabButtons = document.querySelectorAll('.tabs button');
+    const tabContents = document.querySelectorAll('.tab-content');
+    const previewToggle = document.getElementById('preview-toggle');
+    const formContent = document.getElementById('form-content');
+    const cvPreview = document.getElementById('cv-preview');
+    
+    // Tab Navigation
+    tabButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const tabName = button.getAttribute('data-tab');
+        
+        // Update active tab
+        tabButtons.forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+        
+        // Show active tab content
+        tabContents.forEach(content => {
+          content.classList.add('hidden');
+        });
+        document.getElementById(`${tabName}-tab`).classList.remove('hidden');
+        
+        state.activeTab = tabName;
+      });
+    });
+    
+    // Preview Toggle
+    previewToggle.addEventListener('click', () => {
+      state.preview = !state.preview;
+      
+      if (state.preview) {
+        updatePreview();
+        formContent.classList.add('hidden');
+        cvPreview.classList.remove('hidden');
+        previewToggle.textContent = 'Edit CV';
+      } else {
+        formContent.classList.remove('hidden');
+        cvPreview.classList.add('hidden');
+        previewToggle.textContent = 'Preview CV';
+      }
+    });
+    
+    // Handle Personal Info
+    document.getElementById('name').addEventListener('input', e => {
+      state.personal.name = e.target.value;
+    });
+    
+    document.getElementById('email').addEventListener('input', e => {
+      state.personal.email = e.target.value;
+    });
+    
+    document.getElementById('phone').addEventListener('input', e => {
+      state.personal.phone = e.target.value;
+    });
+    
+    document.getElementById('address').addEventListener('input', e => {
+      state.personal.address = e.target.value;
+    });
+    
+    document.getElementById('summary').addEventListener('input', e => {
+      state.personal.summary = e.target.value;
+    });
+    
+    // Add Education Entry
+    document.getElementById('add-education').addEventListener('click', () => {
+      addEducationEntry();
+    });
+    
+    // Add Experience Entry
+    document.getElementById('add-experience').addEventListener('click', () => {
+      addExperienceEntry();
+    });
+    
+    // Add Skill Entry
+    document.getElementById('add-skill').addEventListener('click', () => {
+      addSkillEntry();
+    });
+    
+    // Helper Functions
+    function addEducationEntry(data = {}) {
+      const id = Date.now();
+      const entry = {
+        id,
+        school: data.school || '',
+        degree: data.degree || '',
+        field: data.field || '',
+        startDate: data.startDate || '',
+        endDate: data.endDate || '',
+        description: data.description || ''
+      };
+      
+      state.education.push(entry);
+      
+      const container = document.getElementById('education-entries');
+      const entryElement = document.createElement('div');
+      entryElement.className = 'card';
+      entryElement.dataset.id = id;
+      entryElement.innerHTML = `
+        <div class="card-header">
+          <h3>Education Entry</h3>
+          <button class="btn btn-danger remove-entry" data-type="education" data-id="${id}">Remove</button>
+        </div>
+        <div class="form-group">
+          <label>School/University</label>
+          <input type="text" class="education-school" value="${entry.school}">
+        </div>
+        <div class="form-group">
+          <label>Degree</label>
+          <input type="text" class="education-degree" value="${entry.degree}">
+        </div>
+        <div class="form-group">
+          <label>Field of Study</label>
+          <input type="text" class="education-field" value="${entry.field}">
+        </div>
+        <div class="grid-2">
+          <div class="form-group">
+            <label>Start Date</label>
+            <input type="text" class="education-start-date" placeholder="MM/YYYY" value="${entry.startDate}">
+          </div>
+          <div class="form-group">
+            <label>End Date</label>
+            <input type="text" class="education-end-date" placeholder="MM/YYYY or Present" value="${entry.endDate}">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Description</label>
+          <textarea class="education-description">${entry.description}</textarea>
+        </div>
+      `;
+      
+      container.appendChild(entryElement);
+      
+      // Add Event Listeners
+      const inputs = entryElement.querySelectorAll('input, textarea');
+      inputs.forEach(input => {
+        input.addEventListener('input', e => {
+          const id = parseInt(entryElement.dataset.id);
+          const entryIndex = state.education.findIndex(entry => entry.id === id);
+          
+          if (entryIndex !== -1) {
+            if (e.target.classList.contains('education-school')) {
+              state.education[entryIndex].school = e.target.value;
+            } else if (e.target.classList.contains('education-degree')) {
+              state.education[entryIndex].degree = e.target.value;
+            } else if (e.target.classList.contains('education-field')) {
+              state.education[entryIndex].field = e.target.value;
+            } else if (e.target.classList.contains('education-start-date')) {
+              state.education[entryIndex].startDate = e.target.value;
+            } else if (e.target.classList.contains('education-end-date')) {
+              state.education[entryIndex].endDate = e.target.value;
+            } else if (e.target.classList.contains('education-description')) {
+              state.education[entryIndex].description = e.target.value;
+            }
+          }
+        });
+      });
+      
+      const removeBtn = entryElement.querySelector('.remove-entry');
+      removeBtn.addEventListener('click', e => {
+        const type = e.target.dataset.type;
+        const id = parseInt(e.target.dataset.id);
+        removeEntry(type, id);
+      });
+    }
+    
+    function addExperienceEntry(data = {}) {
+      const id = Date.now();
+      const entry = {
+        id,
+        company: data.company || '',
+        position: data.position || '',
+        startDate: data.startDate || '',
+        endDate: data.endDate || '',
+        description: data.description || ''
+      };
+      
+      state.experience.push(entry);
+      
+      const container = document.getElementById('experience-entries');
+      const entryElement = document.createElement('div');
+      entryElement.className = 'card';
+      entryElement.dataset.id = id;
+      entryElement.innerHTML = `
+        <div class="card-header">
+          <h3>Experience Entry</h3>
+          <button class="btn btn-danger remove-entry" data-type="experience" data-id="${id}">Remove</button>
+        </div>
+        <div class="form-group">
+          <label>Company</label>
+          <input type="text" class="experience-company" value="${entry.company}">
+        </div>
+        <div class="form-group">
+          <label>Position</label>
+          <input type="text" class="experience-position" value="${entry.position}">
+        </div>
+        <div class="grid-2">
+          <div class="form-group">
+            <label>Start Date</label>
+            <input type="text" class="experience-start-date" placeholder="MM/YYYY" value="${entry.startDate}">
+          </div>
+          <div class="form-group">
+            <label>End Date</label>
+            <input type="text" class="experience-end-date" placeholder="MM/YYYY or Present" value="${entry.endDate}">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Description</label>
+          <textarea class="experience-description">${entry.description}</textarea>
+        </div>
+      `;
+      
+      container.appendChild(entryElement);
+      
+      // Add Event Listeners
+      const inputs = entryElement.querySelectorAll('input, textarea');
+      inputs.forEach(input => {
+        input.addEventListener('input', e => {
+          const id = parseInt(entryElement.dataset.id);
+          const entryIndex = state.experience.findIndex(entry => entry.id === id);
+          
+          if (entryIndex !== -1) {
+            if (e.target.classList.contains('experience-company')) {
+              state.experience[entryIndex].company = e.target.value;
+            } else if (e.target.classList.contains('experience-position')) {
+              state.experience[entryIndex].position = e.target.value;
+            } else if (e.target.classList.contains('experience-start-date')) {
+              state.experience[entryIndex].startDate = e.target.value;
+            } else if (e.target.classList.contains('experience-end-date')) {
+              state.experience[entryIndex].endDate = e.target.value;
+            } else if (e.target.classList.contains('experience-description')) {
+              state.experience[entryIndex].description = e.target.value;
+            }
+          }
+        });
+      });
+      
+      const removeBtn = entryElement.querySelector('.remove-entry');
+      removeBtn.addEventListener('click', e => {
+        const type = e.target.dataset.type;
+        const id = parseInt(e.target.dataset.id);
+        removeEntry(type, id);
+      });
+    }
+    
+    function addSkillEntry(data = {}) {
+      const id = Date.now();
+      const entry = {
+        id,
+        name: data.name || '',
+        level: data.level || 'Beginner'
+      };
+      
+      state.skills.push(entry);
+      
+      const container = document.getElementById('skills-entries');
+      const entryElement = document.createElement('div');
+      entryElement.className = 'card';
+      entryElement.dataset.id = id;
+      entryElement.innerHTML = `
+        <div class="card-header">
+          <h3>Skill Entry</h3>
+          <button class="btn btn-danger remove-entry" data-type="skills" data-id="${id}">Remove</button>
+        </div>
+        <div class="form-group">
+          <label>Skill Name</label>
+          <input type="text" class="skill-name" value="${entry.name}">
+        </div>
+        <div class="form-group">
+          <label>Proficiency Level</label>
+          <select class="skill-level">
+            <option value="Beginner" ${entry.level === 'Beginner' ? 'selected' : ''}>Beginner</option>
+            <option value="Intermediate" ${entry.level === 'Intermediate' ? 'selected' : ''}>Intermediate</option>
+            <option value="Advanced" ${entry.level === 'Advanced' ? 'selected' : ''}>Advanced</option>
+            <option value="Expert" ${entry.level === 'Expert' ? 'selected' : ''}>Expert</option>
+          </select>
+        </div>
+      `;
+      
+      container.appendChild(entryElement);
+      
+      // Add Event Listeners
+      const nameInput = entryElement.querySelector('.skill-name');
+      nameInput.addEventListener('input', e => {
+        const id = parseInt(entryElement.dataset.id);
+        const entryIndex = state.skills.findIndex(entry => entry.id === id);
+        
+        if (entryIndex !== -1) {
+          state.skills[entryIndex].name = e.target.value;
+        }
+      });
+      
+      const levelSelect = entryElement.querySelector('.skill-level');
+      levelSelect.addEventListener('change', e => {
+        const id = parseInt(entryElement.dataset.id);
+        const entryIndex = state.skills.findIndex(entry => entry.id === id);
+        
+        if (entryIndex !== -1) {
+          state.skills[entryIndex].level = e.target.value;
+        }
+      });
+      
+      const removeBtn = entryElement.querySelector('.remove-entry');
+      removeBtn.addEventListener('click', e => {
+        const type = e.target.dataset.type;
+        const id = parseInt(e.target.dataset.id);
+        removeEntry(type, id);
+      });
+    }
+    
+    function removeEntry(type, id) {
+      if (type === 'education') {
+        state.education = state.education.filter(entry => entry.id !== id);
+        const entryElement = document.querySelector(`#education-entries .card[data-id="${id}"]`);
+        if (entryElement) {
+          entryElement.remove();
+        }
+      } else if (type === 'experience') {
+        state.experience = state.experience.filter(entry => entry.id !== id);
+        const entryElement = document.querySelector(`#experience-entries .card[data-id="${id}"]`);
+        if (entryElement) {
+          entryElement.remove();
+        }
+      } else if (type === 'skills') {
+        state.skills = state.skills.filter(entry => entry.id !== id);
+        const entryElement = document.querySelector(`#skills-entries .card[data-id="${id}"]`);
+        if (entryElement) {
+          entryElement.remove();
+        }
+      }
+    }
+    
+    function updatePreview() {
+      // Personal Info
+      document.getElementById('preview-name').textContent = state.personal.name || 'Your Name';
+      document.getElementById('preview-email').textContent = state.personal.email;
+      document.getElementById('preview-phone').textContent = state.personal.phone;
+      document.getElementById('preview-address').textContent = state.personal.address;
+      
+      // Summary
+      const summarySection = document.getElementById('preview-summary-section');
+      const summaryContent = document.getElementById('preview-summary');
+      
+      if (state.personal.summary) {
+        summarySection.classList.remove('hidden');
+        summaryContent.textContent = state.personal.summary;
+      } else {
+        summarySection.classList.add('hidden');
+      }
+      
+      // Experience
+      const experienceSection = document.getElementById('preview-experience-section');
+      const experienceContent = document.getElementById('preview-experience');
+      
+      if (state.experience.length > 0 && state.experience[0].company) {
+        experienceSection.classList.remove('hidden');
+        experienceContent.innerHTML = '';
+        
+        state.experience.forEach(exp => {
+          const expElement = document.createElement('div');
+          expElement.className = 'cv-item';
+          expElement.innerHTML = `
+            <div class="cv-item-header">
+              <div class="cv-item-title">${exp.position}</div>
+              <div class="cv-item-date">${exp.startDate} - ${exp.endDate}</div>
+            </div>
+            <div class="cv-item-subtitle">${exp.company}</div>
+            <div class="cv-item-desc">${exp.description}</div>
+          `;
+          
+          experienceContent.appendChild(expElement);
+        });
+      } else {
+        experienceSection.classList.add('hidden');
+      }
+      
+      // Education
+      const educationSection = document.getElementById('preview-education-section');
+      const educationContent = document.getElementById('preview-education');
+      
+      if (state.education.length > 0 && state.education[0].school) {
+        educationSection.classList.remove('hidden');
+        educationContent.innerHTML = '';
+        
+        state.education.forEach(edu => {
+          const eduElement = document.createElement('div');
+          eduElement.className = 'cv-item';
+          eduElement.innerHTML = `
+            <div class="cv-item-header">
+              <div class="cv-item-title">${edu.degree} ${edu.field ? `in ${edu.field}` : ''}</div>
+              <div class="cv-item-date">${edu.startDate} - ${edu.endDate}</div>
+            </div>
+            <div class="cv-item-subtitle">${edu.school}</div>
+            ${edu.description ? `<div class="cv-item-desc">${edu.description}</div>` : ''}
+          `;
+          
+          educationContent.appendChild(eduElement);
+        });
+      } else {
+        educationSection.classList.add('hidden');
+      }
+      
+      // Skills
+      const skillsSection = document.getElementById('preview-skills-section');
+      const skillsContent = document.getElementById('preview-skills');
+      
+      if (state.skills.length > 0 && state.skills[0].name) {
+        skillsSection.classList.remove('hidden');
+        skillsContent.innerHTML = '';
+        
+        state.skills.forEach(skill => {
+          const skillElement = document.createElement('span');
+          skillElement.className = 'skill-badge';
+          skillElement.textContent = `${skill.name} (${skill.level})`;
+          
+          skillsContent.appendChild(skillElement);
+        });
+      } else {
+        skillsSection.classList.add('hidden');
+      }
+    }
+    
+    // Initialize with one entry of each type
+    addEducationEntry();
+    addExperienceEntry();
+    addSkillEntry();
+  </script>
+</body>
+</html>
